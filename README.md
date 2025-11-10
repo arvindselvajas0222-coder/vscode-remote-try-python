@@ -87,7 +87,116 @@ Some things to try:
    - Check the check box next to "Node.js (via nvm) and yarn" (published by devcontainers) 
    - Click OK
    - Press <kbd>F1</kbd> and select the **Dev Containers: Rebuild Container** or **Codespaces: Rebuild Container** command so the modifications are picked up.
+##Docker Manual Installation for VS Code Remote - Containers (vscode-remote-try-python)
 
+This guide walks you through installing Docker on Ubuntu and using it with VS Code's Remote - Containers extension, specifically with the vscode-remote-try-python template.
+
+Prerequisites
+
+Ubuntu 24.04 or later
+
+A user with sudo privileges
+
+Visual Studio Code installed with the Remote - Containers extension
+
+🧱 Step 1: Uninstall Old Docker Versions (if any)
+
+Before installing a fresh version of Docker, remove any old versions:
+
+sudo apt remove docker docker.io containerd runc
+
+🧱 Step 2: Install Required Dependencies
+
+Install required dependencies for Docker installation:
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+
+🧱 Step 3: Add Docker’s Official GPG Key
+
+Add Docker’s official GPG key to ensure the authenticity of packages:
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+🧱 Step 4: Add Docker’s Official Repository
+
+Add Docker’s official APT repository:
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+🧱 Step 5: Update the Package Index
+
+Update your package list to include Docker’s repository:
+
+sudo apt update
+
+🧱 Step 6: Install Docker Engine, CLI, and Containerd
+
+Install Docker Engine, Docker CLI, and Containerd:
+
+sudo apt install docker-ce docker-ce-cli containerd.io -y
+
+🧱 Step 7: Enable and Start Docker Service
+
+Enable Docker to start on boot and start the service:
+
+sudo systemctl enable docker
+sudo systemctl start docker
+
+🧱 Step 8: Verify Installation
+
+Confirm that Docker is installed correctly by checking the version:
+
+docker --version
+
+
+You should see an output like:
+
+Docker version 20.10.7, build f0df350
+
+🧱 Step 9: (Optional) Run Docker Without sudo
+
+If you prefer to run Docker commands without needing sudo:
+
+sudo usermod -aG docker $USER
+
+
+After running this, log out and log back in (or reboot your system).
+
+🧑‍💻 Step 10: Using VS Code Remote - Containers
+
+Install Remote - Containers Extension: In VS Code, install the Remote - Containers extension
+.
+
+Clone the vscode-remote-try-python repository (or any other repo you want to work with):
+
+git clone https://github.com/microsoft/vscode-remote-try-python.git
+cd vscode-remote-try-python
+
+
+Open VS Code: Inside your project folder, launch VS Code:
+
+code .
+
+
+Reopen in Container: In the bottom-left corner of VS Code, click the "><" Remote button and select “Reopen in Container”. VS Code will build the Docker container and connect to your Python environment inside the container.
+
+Troubleshooting Tips
+
+Docker Command Not Found: Ensure the Docker service is running with sudo systemctl status docker.
+
+Build Failures in VS Code: Check the logs inside VS Code's terminal and make sure your Docker version is compatible with the Remote - Containers extension.
+
+Further Resources
+
+Docker Documentation
+
+VS Code Remote Containers Documentation
+
+vscode-remote-try-python GitHub Repository
 ### More samples
 
 - [Tweeter App - Python and Django](https://github.com/Microsoft/python-sample-tweeterapp)
@@ -110,3 +219,4 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 Copyright © Microsoft Corporation All rights reserved.<br />
 Licensed under the MIT License. See LICENSE in the project root for license information.
+
